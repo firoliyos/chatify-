@@ -1,9 +1,9 @@
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
-import { ENV } from "../lib/env.js";
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import cloudinary from "../lib/cloudinary.js"
+import { ENV } from "../lib/env.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -14,9 +14,7 @@ export const signup = async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 6 characters" });
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
     }
 
     // check if emailis valid: regex
@@ -28,6 +26,7 @@ export const signup = async (req, res) => {
     const user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "Email already exists" });
 
+    // 123456 => $dnjasdkasj_?dmsakmk
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -38,9 +37,12 @@ export const signup = async (req, res) => {
     });
 
     if (newUser) {
+      // before CR:
       // generateToken(newUser._id, res);
       // await newUser.save();
 
+      // after CR:
+      // Persist user first, then issue auth cookie
       const savedUser = await newUser.save();
       generateToken(savedUser._id, res);
 
@@ -52,19 +54,15 @@ export const signup = async (req, res) => {
       });
 
       try {
-        await sendWelcomeEmail(
-          savedUser.email,
-          savedUser.fullName,
-          ENV.CLIENT_URL
-        );
+        await sendWelcomeEmail(savedUser.email, savedUser.fullName, ENV.CLIENT_URL);
       } catch (error) {
         console.error("Failed to send welcome email:", error);
       }
     } else {
-      res.status(400).json({ message: "Invalid user Data" });
+      res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error) {
-    console.log("Error in signup conroller:", error);
+    console.log("Error in signup controller:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
