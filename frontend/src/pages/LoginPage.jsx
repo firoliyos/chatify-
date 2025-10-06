@@ -14,12 +14,12 @@ function LoginPage() {
   };
 
   return (
-    <div className="w-full flex items-center justify-center p-4 bg-slate-900">
-      <div className="relative w-full max-w-6xl md:h-[800px] h-[650px]">
+    <div className="w-full flex items-center justify-center p-2 sm:p-4 bg-slate-900 min-h-screen">
+      <div className="relative w-full max-w-6xl min-h-screen md:min-h-[800px] h-auto md:h-[650px] flex items-center justify-center">
         <BorderAnimatedContainer>
-          <div className="w-full flex flex-col md:flex-row">
-            {/* FORM CLOUMN - LEFT SIDE */}
-            <div className="md:w-1/2 p-8 flex items-center justify-center md:border-r border-slate-600/30">
+          <div className="w-full flex flex-col md:flex-row h-full">
+            {/* FORM COLUMN - LEFT SIDE */}
+            <div className="w-full md:w-1/2 p-4 sm:p-8 flex items-center justify-center md:border-r border-slate-600/30">
               <div className="w-full max-w-md">
                 {/* HEADING TEXT */}
                 <div className="text-center mb-8">
@@ -81,7 +81,7 @@ function LoginPage() {
             </div>
 
             {/* FORM ILLUSTRATION - RIGHT SIDE */}
-            <div className="md:w-1/2 md:flex items-center justify-center p-6 bg-gradient-to-bl from-slate-800/20 to-transparent">
+            <div className="hidden md:flex w-1/2 items-center justify-center p-6 bg-gradient-to-bl from-slate-800/20 to-transparent">
               <div>
                 <img
                   src="/login.png"
@@ -91,6 +91,24 @@ function LoginPage() {
                 <div className="mt-6 text-center">
                   <h3 className="text-xl font-medium text-cyan-400">Connect anytime, anywhere</h3>
 
+                  <div className="mt-4 flex justify-center gap-4">
+                    <span className="auth-badge">Free</span>
+                    <span className="auth-badge">Easy Setup</span>
+                    <span className="auth-badge">Private</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Show illustration below form on mobile */}
+            <div className="md:hidden mt-8 flex items-center justify-center">
+              <div>
+                <img
+                  src="/login.png"
+                  alt="People using mobile devices"
+                  className="w-full h-auto object-contain max-w-xs mx-auto"
+                />
+                <div className="mt-6 text-center">
+                  <h3 className="text-xl font-medium text-cyan-400">Connect anytime, anywhere</h3>
                   <div className="mt-4 flex justify-center gap-4">
                     <span className="auth-badge">Free</span>
                     <span className="auth-badge">Easy Setup</span>
