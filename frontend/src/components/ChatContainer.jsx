@@ -33,11 +33,25 @@ function ChatContainer() {
   }, [messages]);
 
   return (
-    <>
+    <div className="flex flex-col h-full max-h-full">
       <ChatHeader />
-      <div className="flex-1 px-6 overflow-y-auto py-8">
+      <div
+        className="
+          flex-1
+          px-2 sm:px-4 md:px-6
+          overflow-y-auto
+          py-4 sm:py-6 md:py-8
+          bg-slate-900/70
+          max-h-[calc(100dvh-120px)]
+          min-h-0
+        "
+        style={{
+          // Ensures the message area fits the screen on mobile
+          height: "100%",
+        }}
+      >
         {messages.length > 0 && !isMessagesLoading ? (
-          <div className="max-w-3xl mx-auto space-y-6">
+          <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
             {messages.map((msg) => (
               <div
                 key={msg._id}
@@ -51,9 +65,9 @@ function ChatContainer() {
                   }`}
                 >
                   {msg.image && (
-                    <img src={msg.image} alt="Shared" className="rounded-lg h-48 object-cover" />
+                    <img src={msg.image} alt="Shared" className="rounded-lg h-40 sm:h-48 object-cover" />
                   )}
-                  {msg.text && <p className="mt-2">{msg.text}</p>}
+                  {msg.text && <p className="mt-2 break-words">{msg.text}</p>}
                   <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
                     {new Date(msg.createdAt).toLocaleTimeString(undefined, {
                       hour: "2-digit",
@@ -72,9 +86,10 @@ function ChatContainer() {
           <NoChatHistoryPlaceholder name={selectedUser.fullName} />
         )}
       </div>
-
-      <MessageInput />
-    </>
+      <div className="px-2 sm:px-4 md:px-6 pb-2 sm:pb-4 md:pb-6 bg-slate-900/70">
+        <MessageInput />
+      </div>
+    </div>
   );
 }
 
